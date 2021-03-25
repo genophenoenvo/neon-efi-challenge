@@ -17,9 +17,27 @@
 
 #### Simple 
 
-A simple exponential smoothing model using the `forecast` package in R.
+Lead: David LeBauer
+
+Primary aim is to work out the mechanisms of the forecast challenge - and if a simple seasonal forecast wins the yipee!
+
+- `models/simple`
+  - `ets_forecast.R`
+An exponential smoothing model with seasonality using the `forecast` package in R. 
+
+TODO: separate out interpolation code and model from notebook into python script(s) that can be run each day
+
+https://otexts.com/fpp3/holt-winters.html
 
 ### Random Forest Regressor
 
+Leads: Arun Ross and Debashmita Pal
 
-### 
+- `/models/random_forest/`
+  - `gcc_predictions_model_interpolating_missing_data.ipynb` generates predictions
+  - `submit_rfr.R` submits output of interpolation code
+
+TODO: separate out data download and submission from model
+
+
+### Another
