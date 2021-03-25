@@ -1,6 +1,8 @@
 ## Models for EFI Challenge
 
-Background:
+
+### Background
+
 - EFI videos 
   - EFI Challenge overview https://youtu.be/deWuTLGspJg
   - Infrastructure https://youtu.be/-tH4dG3yO3U
@@ -10,3 +12,14 @@ Background:
 - the two Richardson et al papers
   - Richardson et al 2018 Nature Scientific Data https://doi.org/10.1038/sdata.2018.28
   - Richardson et al 2019 New Phytologist https://doi.org/10.1111/nph.15591
+
+### Contents
+
+#### Simple 
+
+A simple exponential smoothing model using the `forecast` package in R.
+
+### Random Forest Regressor
+
+
+### 
