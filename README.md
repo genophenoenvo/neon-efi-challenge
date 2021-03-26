@@ -15,7 +15,7 @@
 
 ### Contents
 
-#### Simple 
+#### Simple (Team PEG)
 
 Lead: David LeBauer
 
@@ -29,7 +29,11 @@ TODO: separate out interpolation code and model from notebook into python script
 
 https://otexts.com/fpp3/holt-winters.html
 
-### Random Forest Regressor
+### Random Forest Regressor without Interpolation (Team PEG_RFR0)
+
+todo
+
+### Random Forest Regressor with Interpolation (Team PEG_RFR)
 
 Leads: Arun Ross and Debashmita Pal
 
@@ -38,6 +42,7 @@ Leads: Arun Ross and Debashmita Pal
   - `submit_rfr.R` submits output of interpolation code
 
 TODO: separate out data download and submission from model
+
 
 
 ### Another
