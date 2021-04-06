@@ -15,11 +15,34 @@
 
 ### Contents
 
-#### Simple 
+#### Simple (Team PEG)
 
-A simple exponential smoothing model using the `forecast` package in R.
+Lead: David LeBauer
 
-### Random Forest Regressor
+Primary aim is to work out the mechanisms of the forecast challenge - and if a simple seasonal forecast wins the yipee!
+
+- `models/simple`
+  - `ets_forecast.R`
+An exponential smoothing model with seasonality using the `forecast` package in R. 
+
+TODO: separate out interpolation code and model from notebook into python script(s) that can be run each day
+
+https://otexts.com/fpp3/holt-winters.html
+
+### Random Forest Regressor without Interpolation (Team PEG_RFR0)
+
+todo
+
+### Random Forest Regressor with Interpolation (Team PEG_RFR)
+
+Leads: Arun Ross and Debashmita Pal
+
+- `/models/random_forest/`
+  - `gcc_predictions_model_interpolating_missing_data.ipynb` generates predictions
+  - `submit_rfr.R` submits output of interpolation code
+
+TODO: separate out data download and submission from model
 
 
-### 
+
+### Another
