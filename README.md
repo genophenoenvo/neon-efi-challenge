@@ -21,5 +21,7 @@ A simple exponential smoothing model using the `forecast` package in R.
 
 ### Random Forest Regressor
 
+Two versions of the Random Forest Regressor were used. 
+
 
 ### 
