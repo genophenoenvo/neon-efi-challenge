@@ -1,0 +1,6 @@
+#!/bin/bash
+
+Rscript 01_pull_gcc.R
+python3 02_rfr0.py
+python3 03_rfr.py
+Rscript 04_submit_rfr.R
