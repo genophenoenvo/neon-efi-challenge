@@ -10,7 +10,7 @@ dirname = os.path.abspath(os.getcwd())
 
 # Getting latest targets_gcc.csv file from 'inputs' folder
 inputs_path = os.path.join(dirname, 'inputs')
-file_type = '\*csv'
+file_type = '/*csv'
 files = glob.glob(inputs_path + file_type)
 latest_file = max(files, key=os.path.getctime)
 
