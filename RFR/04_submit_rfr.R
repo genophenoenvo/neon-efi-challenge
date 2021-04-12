@@ -25,7 +25,7 @@ for(v in version){
   
   # Write out
   pred_filename <- paste('phenology', Sys.Date(), paste0(v, '.csv'), sep = '-')
-  readr::write_csv(preds, file = file.path(".", v, "submit", pred_filename))
+  readr::write_csv(preds, file = file.path(".", v, "submissions", pred_filename))
   
   # Validate
   # forecast_output_validator(file.path(".", v, "submit", pred_filename))
