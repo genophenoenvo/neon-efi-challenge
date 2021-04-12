@@ -4,6 +4,7 @@ import datetime
 import pickle
 import glob
 import os
+import sklearn
 
 # Getting current working directory
 dirname = os.path.abspath(os.getcwd())
@@ -94,7 +95,7 @@ for k in range(0,8):
     if(input_record[input_features].isnull().values.any()):
         print("Missing values present in the input features for" + site_list[k])
     
-    file_name = "model_"+site_list[k]+".pkl"
+    file_name = os.path.join(dirname, 'PEG_RFR', 'models', "model_"+site_list[k]+".pkl")
     model = pickle.load(open(file_name,'rb'))
     future_pred = model.predict(input_record[input_features])
     
@@ -110,7 +111,7 @@ last_year_df['time'] = last_year_df['time'].mask(last_year_df['time'].dt.year ==
 last_year_df = last_year_df.ffill(axis=0)
 
 # Generating output csv files with predictions
-outputs_path = os.path.join(dirname, 'outputs/')
+outputs_path = os.path.join(dirname, 'PEG_RFR', 'outputs/')
 output_file_name= "PEG_RFR_predictions_" + str(date.today().strftime("%m-%d-%y"))+ ".csv"
 final_output = pd.merge(left=future_pred_35, right=last_year_df, how='left', left_on=['time','siteID'], right_on=['time','siteID'])
 final_output.to_csv(outputs_path + output_file_name, index=False, header = True)
