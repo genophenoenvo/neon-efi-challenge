@@ -9,7 +9,7 @@ version <- c("PEG_RFR", "PEG_RFR0")
 for(v in version){
   # Read in latest date
   out <- list.files(path = paste0("./", v, "/outputs/"))
-  dates <- as.Date(stringr::str_extract(out, "[0-9]{2}\\-[0-9]{2}\\-[0-9]{2}"))
+  dates <- as.Date(stringr::str_extract(out, "[0-9]{2}\\-[0-9]{2}\\-[0-9]{2}"), format = "%m-%d-%y")
   ind <- which.max(dates)
   
   # Clean and format
