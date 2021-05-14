@@ -9,8 +9,8 @@ import sklearn
 # Getting current working directory
 dirname = os.path.abspath(os.getcwd())
 
-# Getting latest targets_gcc.csv file from 'inputs' folder
-inputs_path = os.path.join(dirname, 'inputs')
+# Getting latest targets_gcc.csv file from 'inputs_gcc' folder
+inputs_path = os.path.join(dirname, 'inputs_gcc')
 file_type = '/*csv'
 files = glob.glob(inputs_path + file_type)
 latest_file = max(files, key=os.path.getctime)
