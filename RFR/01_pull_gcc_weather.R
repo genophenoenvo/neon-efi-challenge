@@ -19,7 +19,7 @@ source("~/neon4cast/R/noaa.R")
 
 ###########Download weather data###########
 pheno_sites <- c("HARV", "BART", "SCBI", "STEI", "UKFS", "GRSM", "DELA", "CLBJ")
-download_noaa(siteID = pheno_sites, interval = "1hr", date = Sys.Date())
+download_noaa(siteID = pheno_sites, interval = "1hr", date = Sys.Date()-1)
 noaa_fc <- stack_noaa()
 
 ###########Clean up weather data###########
