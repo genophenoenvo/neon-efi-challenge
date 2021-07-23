@@ -15,7 +15,8 @@ for(v in version){
   
   # Clean and format
   preds <- readr::read_csv(file.path(v, "outputs", out[ind])) %>% 
-    filter(!time <= Sys.Date())
+    filter(!time <= Sys.Date()) %>%
+    relocate(gcc_sd, rcc_sd, .after = rcc_90)
   
   # Score
   # scores <- score(preds, theme = "phenology")
