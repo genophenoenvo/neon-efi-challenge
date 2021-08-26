@@ -1,6 +1,7 @@
 ###########Read in libraries###########
 library(neonstore)
 library(dplyr)
+library(udunits2)
 
 ###########Clean weather data###########
 forecast_sites <- c("HARV", "BART", "SCBI", "STEI", "UKFS", "GRSM", "DELA", "CLBJ")
@@ -34,8 +35,8 @@ neon_download(product = ht_product_id,
               start_date = "2021-01-01")
 
 temp <- neon_read(table = "RH_30min-expanded", 
-                        product = ht_product_id, 
-                        site = forecast_sites)
+                  product = ht_product_id, 
+                  site = forecast_sites)
 
 summary_temp <- temp %>% 
   filter(!is.na(tempRHMean)) %>% 
@@ -46,6 +47,33 @@ summary_temp <- temp %>%
   summarize(count = n(), min_daily_temp = min(tempRHMean), max_daily_temp = max(tempRHMean)) %>% 
   filter(count == 48) %>% 
   select(-count)
+
+# Radiation
+# inSWMean is in watts/m2, convert to megajoules/day
+
+rad_product_id <- "DP1.00023.001"
+neon_download(product = rad_product_id, 
+              site = forecast_sites, 
+              type = "expanded", 
+              start_date = "2021-01-01")
+
+radiation <- neon_read(table = "SLRNR_30min-expanded", 
+                       product = rad_product_id, 
+                       site = forecast_sites)
+
+summary_radiation <- radiation %>% 
+  filter(!is.na(inSWMean)) %>% 
+  select(startDateTime, inSWMean, siteID) %>% 
+  tidyr::separate(startDateTime, c("startDate", "startTime"), sep = " ") %>% 
+  mutate(rad = ud.convert(inSWMean * 30 * 60, "joule", "megajoule")) %>% 
+  group_by(siteID, startDate) %>% 
+  summarize(count = n(), sum_daily_rad = sum(rad)) %>% 
+  filter(count == 48) %>% 
+  select(-count)
+
+# VPD
+
+#use rh and temp from temp dataframe, with plantecophys::RHtoVPD
 
 ###########Combine into final csv###########
 all_weather_vars <- full_join(mean_daily_precip, summary_temp, 
