@@ -94,5 +94,5 @@ three_weather_vars <- full_join(two_weather_vars, summary_vpd,
 four_weather_vars <- full_join(three_weather_vars, summary_radiation, 
                                 by = c("siteID", "startDate"))
 
-write.csv(three_weather_vars, "models/weather/efi_forecast_weather_validation.csv", 
+write.csv(four_weather_vars, "models/weather/efi_forecast_weather_validation.csv", 
           row.names = FALSE)
