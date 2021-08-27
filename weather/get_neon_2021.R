@@ -2,6 +2,7 @@
 library(neonstore)
 library(dplyr)
 library(udunits2)
+library(plantecophys)
 
 ###########Clean weather data###########
 forecast_sites <- c("HARV", "BART", "SCBI", "STEI", "UKFS", "GRSM", "DELA", "CLBJ")
@@ -48,9 +49,21 @@ summary_temp <- temp %>%
   filter(count == 48) %>% 
   select(-count)
 
+# VPD
+#RHMean is in % and tempRHMean is in C, which are desired units
+summary_vpd <- temp %>% 
+  filter(!is.na(RHMean), !is.na(tempRHMean)) %>% 
+  filter(horizontalPosition == "000") %>% 
+  select(startDateTime, RHMean, tempRHMean, siteID) %>% 
+  mutate(vpd = RHtoVPD(RHMean, tempRHMean)) %>% 
+  tidyr::separate(startDateTime, c("startDate", "startTime"), sep = " ") %>% 
+  group_by(siteID, startDate) %>% 
+  summarize(count = n(), mean_daily_vpd = mean(vpd)) %>% 
+  filter(count == 48) %>% 
+  select(-count)
+
 # Radiation
 # inSWMean is in watts/m2, convert to megajoules/day
-
 rad_product_id <- "DP1.00023.001"
 neon_download(product = rad_product_id, 
               site = forecast_sites, 
@@ -71,12 +84,15 @@ summary_radiation <- radiation %>%
   filter(count == 48) %>% 
   select(-count)
 
-# VPD
-
-#use rh and temp from temp dataframe, with plantecophys::RHtoVPD
-
 ###########Combine into final csv###########
-all_weather_vars <- full_join(mean_daily_precip, summary_temp, 
+two_weather_vars <- full_join(mean_daily_precip, summary_temp, 
                               by = c("siteID", "startDate"))
-write.csv(all_weather_vars, "models/weather/efi_forecast_weather_validation.csv", 
+
+three_weather_vars <- full_join(two_weather_vars, summary_vpd, 
+                                by = c("siteID", "startDate"))
+
+four_weather_vars <- full_join(three_weather_vars, summary_radiation, 
+                                by = c("siteID", "startDate"))
+
+write.csv(three_weather_vars, "models/weather/efi_forecast_weather_validation.csv", 
           row.names = FALSE)
