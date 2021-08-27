@@ -98,7 +98,8 @@ four_weather_vars <- full_join(three_weather_vars, summary_radiation,
          max_temp = max_daily_temp,
          min_temp = min_daily_temp,
          precip = daily_precip,
-         vpd = mean_daily_vpd)
+         vpd = mean_daily_vpd) %>%
+  relocate(siteID, date, radiation, max_temp, min_temp, precip, vpd)
 
 write.csv(four_weather_vars, "models/weather/efi_forecast_weather_validation.csv", 
           row.names = FALSE)
