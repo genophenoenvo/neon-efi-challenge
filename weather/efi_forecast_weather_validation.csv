@@ -1,4 +1,4 @@
-"siteID","startDate","daily_precip","min_daily_temp","max_daily_temp","mean_daily_vpd","sum_daily_rad"
+"siteID","date","precip","min_temp","max_temp","vpd","radiation"
 "BART","2021-01-01",0,-4.779,0.942,0.244663166646786,6.35535
 "BART","2021-01-02",0.491,-3.89,1.675,0.0785106246936405,1.128726
 "BART","2021-01-03",0,-8.585,-1.146,0.0693616281417813,NA

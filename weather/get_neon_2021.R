@@ -78,7 +78,7 @@ summary_radiation <- radiation %>%
   filter(!is.na(inSWMean)) %>% 
   select(startDateTime, inSWMean, siteID) %>% 
   tidyr::separate(startDateTime, c("startDate", "startTime"), sep = " ") %>% 
-  mutate(rad = ud.convert(inSWMean * 30 * 60, "joule", "megajoule")) %>% 
+  mutate(rad = ud.convert(as.numeric(inSWMean) * 30 * 60, "joule", "megajoule")) %>% 
   group_by(siteID, startDate) %>% 
   summarize(count = n(), sum_daily_rad = sum(rad)) %>% 
   filter(count == 48) %>% 
@@ -92,7 +92,13 @@ three_weather_vars <- full_join(two_weather_vars, summary_vpd,
                                 by = c("siteID", "startDate"))
 
 four_weather_vars <- full_join(three_weather_vars, summary_radiation, 
-                                by = c("siteID", "startDate"))
+                                by = c("siteID", "startDate")) %>%
+  rename(date = startDate,
+         radiation = sum_daily_rad,
+         max_temp = max_daily_temp,
+         min_temp = min_daily_temp,
+         precip = daily_precip,
+         vpd = mean_daily_vpd)
 
 write.csv(four_weather_vars, "models/weather/efi_forecast_weather_validation.csv", 
           row.names = FALSE)
