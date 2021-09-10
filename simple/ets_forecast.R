@@ -7,6 +7,7 @@ library(data.table)
 
 file <- 'https://data.ecoforecast.org/targets/phenology/phenology-targets.csv.gz'
 
+# now contains both gcc_90 and rcc_90
 gcc_raw <- fread(file)
 
 i <- 1
@@ -32,18 +33,31 @@ library(forecast)
 library(hts)
 library(tidyr)
 gcc_wide <- gcc %>% 
-  select(time, siteID, gcc_90) %>% 
+  dplyr::select(time, siteID, gcc_90) %>% 
   pivot_wider(id_cols = time, names_from = siteID, values_from = gcc_90)
 
+rcc_wide <- gcc %>% 
+  dplyr::select(time, siteID, rcc_90) %>% 
+  pivot_wider(id_cols = time, names_from = siteID, values_from = rcc_90)
+
 gcc_ts <- ts(gcc_wide, frequency = 365)
+rcc_ts <- ts(rcc_wide, frequency = 365)
 
 gcc_future <- forecast(gcc_ts, h = 180, level = c(0.3, 0.7))
+rcc_future <- forecast(rcc_ts, h = 180, level = c(0.3, 0.7))
 
-preds_wide <- gcc_future %>% as.data.frame %>% filter(!Series == 'time') %>% 
+gcc_preds_wide <- gcc_future %>% as.data.frame %>% filter(!Series == 'time') %>% 
   mutate(sd = (`Hi 30` - `Lo 30`)/2) %>% 
   rename(siteID = Series, mean = `Point Forecast`) %>% 
   mutate(time = rep(now + days(1:180), 8)) %>% 
-  select(time, siteID, mean, sd)
+  dplyr::select(time, siteID, mean, sd)
+
+rcc_preds_wide <- rcc_future %>% as.data.frame %>% filter(!Series == 'time') %>% 
+  mutate(sd = (`Hi 30` - `Lo 30`)/2) %>% 
+  rename(siteID = Series, mean = `Point Forecast`) %>% 
+  mutate(time = rep(now + days(1:180), 8)) %>% 
+  dplyr::select(time, siteID, mean, sd)
+
 # END Simple Seasonal + Exponential Smoothing Model
 
 # BEGIN historical mean + window model used through 2021-03-17
@@ -69,9 +83,14 @@ preds_wide <- gcc_future %>% as.data.frame %>% filter(!Series == 'time') %>%
 #   select(time, siteID, forecast, data_assimilation, mean, sd)
 # END historical mean + window model
 
-preds <- preds_wide %>%  
+gcc_preds <- gcc_preds_wide %>%  
   tidyr::pivot_longer(cols = c('mean', 'sd'), names_to = 'statistic', values_to = 'gcc_90')
+rcc_preds <- rcc_preds_wide %>%  
+  tidyr::pivot_longer(cols = c('mean', 'sd'), names_to = 'statistic', values_to = 'rcc_90')
 
+preds <- cbind.data.frame(gcc_preds, rcc_preds$rcc_90) %>%
+  rename(rcc_90 = 'rcc_preds$rcc_90')
+  
 pred_filename <- paste('phenology', year(now),  sprintf("%02d", this_month),  sprintf("%02d", this_day), 'PEG.csv', sep = '-')
 readr::write_csv(preds, file = pred_filename)
 
@@ -123,7 +142,7 @@ keywordSet <- list(
                    "timeseries")
   ))
 
-abstract_text <- 'a secret way of predicting gcc'
+abstract_text <- 'a secret way of predicting gcc/rcc'
 
 plant_cover <- readr::read_csv('plant_cover/plant_cover.csv')
 
