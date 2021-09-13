@@ -88,7 +88,8 @@ gcc_preds <- gcc_preds_wide %>%
 rcc_preds <- rcc_preds_wide %>%  
   tidyr::pivot_longer(cols = c('mean', 'sd'), names_to = 'statistic', values_to = 'rcc_90')
 
-preds <- cbind.data.frame(gcc_preds, rcc_preds$rcc_90) %>%
+preds <- gcc_preds %>% 
+  left_join(rcc_preds, by = c("time", "siteID", "statistic"))
   rename(rcc_90 = 'rcc_preds$rcc_90')
   
 pred_filename <- paste('phenology', year(now),  sprintf("%02d", this_month),  sprintf("%02d", this_day), 'PEG.csv', sep = '-')
