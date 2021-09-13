@@ -90,7 +90,6 @@ rcc_preds <- rcc_preds_wide %>%
 
 preds <- gcc_preds %>% 
   left_join(rcc_preds, by = c("time", "siteID", "statistic"))
-  rename(rcc_90 = 'rcc_preds$rcc_90')
   
 pred_filename <- paste('phenology', year(now),  sprintf("%02d", this_month),  sprintf("%02d", this_day), 'PEG.csv', sep = '-')
 readr::write_csv(preds, file = pred_filename)
