@@ -143,7 +143,7 @@ keywordSet <- list(
                    "timeseries")
   ))
 
-abstract_text <- 'a secret way of predicting gcc/rcc'
+abstract_text <- 'predicting gcc and rcc with an exponential smoothing model with seasonality using the `forecast` package in R.'
 
 plant_cover <- readr::read_csv('plant_cover/plant_cover.csv')
 
