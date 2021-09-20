@@ -208,6 +208,10 @@ aws.s3::put_object(pred_filename,
                    bucket = "submissions", 
                    region="data", 
                    base_url = "ecoforecast.org")
+# aws.s3::put_object(meta_data_filename, 
+#                    bucket = "submissions", 
+#                    region="data", 
+#                    base_url = "ecoforecast.org")
 # need to add line to submit gcc_predictions.R
 
 
