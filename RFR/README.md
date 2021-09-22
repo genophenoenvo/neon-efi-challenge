@@ -30,3 +30,16 @@ Our goal is to produce and submit daily forecasts. `forecast_gcc.sh` is a shell 
 4. `04_PEG_RFR2_gcc_predictions_with_weather_variables.py` ingests the most recent gcc and weather forecast data, runs the 8 site-specific models in `PEG_RFR2/models`, and outputs csv file to `PEG_RFR2/outputs` with the run date
 5. `05_submit_rfr.R` takes the latest output from `PEG_RFR0/outputs`, `PEG_RFR/outputs`, and `PEG_RFR2/outputs`, formats for submission, saves into respective `submissions/` folders, and submits to EFI competition website. 
 
+## Forecasting submission
+
+Daily forecasts are submitted automatically once per day using a chron job to run all the forecasting pipeline scripts on a CyVerse OpenStack server. 
+
+Can log into server using `ssh -i [ssh key path] [username]@128.196.65.173`. It contains a copy of this repository, all of the required R and Python packages, and the following chron job: 
+
+```
+ SHELL=/bin/bash
+ MAILTO=kristinariemer@email.arizona.edu
+ 00 22 * * * cd /home/kristinariemer/neon-datasets/models/RFR && bash forecast_gcc.sh && echo `date` >> /home/kristinariemer/cron.txt
+ ```
+
+Confirmation of submissions are in `cron.txt`. 
