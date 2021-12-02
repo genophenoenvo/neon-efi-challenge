@@ -23,31 +23,33 @@ download_noaa(siteID = pheno_sites, interval = "1hr", date = Sys.Date()-1)
 noaa_fc <- stack_noaa()
 
 ###########Clean up weather data###########
-# First, convert units and take median of 31 ensembles
+# First, convert units
 hourly <- noaa_fc %>% 
   tidyr::drop_na() %>% # the 36th day has NAs, exclude
+  rename(radiation = surface_downwelling_shortwave_flux_in_air) %>%
   mutate(airtemp_C = ud.convert(air_temperature, "kelvin", "celsius"),
          precip = ud.convert(precipitation_flux, "s^-1", "d^-1"), #kg per m2 is equivalent to mm
-         vpd = RHtoVPD(RH = relative_humidity, TdegC = airtemp_C)) %>%
-  group_by(siteID, time) %>%
-  summarize(radiation = median(surface_downwelling_shortwave_flux_in_air),
-            airtemp_C = median(airtemp_C),
-            precip = median(precip),
-            vpd = median(vpd),
-            rad_Mj_hr = ud.convert(radiation*60*60, "joule", "megajoule")) %>%
-  ungroup() %>%
-  mutate(date = as.Date(time))
+         vpd = RHtoVPD(RH = relative_humidity, TdegC = airtemp_C),
+         rad_Mj_hr = ud.convert(radiation*60*60, "joule", "megajoule"),
+         date = as.Date(time)) 
 
-# Then, summarize to daily. Note that precipitation is cumulative, so take max rather than sum
+# Next, summarize to daily by site and ensemble and drop ens00
 daily <- hourly %>%
-  group_by(siteID, date) %>%
+  group_by(siteID, ensemble, date) %>%
   summarize(radiation = sum(rad_Mj_hr),
             max_temp = max(airtemp_C),
             min_temp = min(airtemp_C),
             precip = max(precip),
             vpd = mean(vpd)) %>%
-  ungroup()
+  ungroup() %>%
+  filter(ensemble != "ens00")
 
 ###########Save weather csv###########
 date <- min(daily$date)
-write_csv(daily, file = paste0('inputs_weather/NOAA_GEFS_35d_', date, '.csv'))
+ens <- unique(daily$ensemble)
+for(e in ens){
+  sub <- filter(daily, ensemble == e)
+  write_csv(daily, file = paste0('inputs_weather/NOAA_GEFS_35d_', 
+                                 date, '_', e, '.csv'))
+}
+
