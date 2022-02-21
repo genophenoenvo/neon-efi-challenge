@@ -5,7 +5,11 @@ library(udunits2)
 library(plantecophys)
 
 ###########Clean weather data###########
-forecast_sites <- c("HARV", "BART", "SCBI", "STEI", "UKFS", "GRSM", "DELA", "CLBJ")
+forecast_sites <- c("BART", "CLBJ", "DELA", "GRSM", 
+                    "HARV", "MLBS", "SCBI", "SERC", 
+                    "STEI", "UKFS", "CPER", "DSNY",
+                    "JORN", "KONZ", "OAES", "WOOD", 
+                    "ONAQ", "SRER")
 
 # Precipitation
 # secPrecipBulk is in mm, which is desired unit
