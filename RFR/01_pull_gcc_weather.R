@@ -18,7 +18,11 @@ library(plantecophys)
 source("~/neon4cast/R/noaa.R")
 
 ###########Download weather data###########
-pheno_sites <- c("HARV", "BART", "SCBI", "STEI", "UKFS", "GRSM", "DELA", "CLBJ")
+pheno_sites <- c("BART", "CLBJ", "DELA", "GRSM", 
+                 "HARV", "MLBS", "SCBI", "SERC", 
+                 "STEI", "UKFS", "CPER", "DSNY",
+                 "JORN", "KONZ", "OAES", "WOOD", 
+                 "ONAQ", "SRER")
 download_noaa(siteID = pheno_sites, interval = "1hr", date = Sys.Date()-1)
 noaa_fc <- stack_noaa()
 
