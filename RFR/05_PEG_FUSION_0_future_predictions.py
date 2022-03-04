@@ -8,7 +8,7 @@ import numpy as np
 # Getting current working directory
 dirname = os.path.abspath(os.getcwd())
 
-# Getting latest targets_gcc.csv file from 'inputs_gcc' folder
+# Getting latest phenology from 'inputs_gss' folder
 inputs_path = os.path.join(dirname, 'inputs_gcc')
 file_type = '/*csv'
 files = glob.glob(inputs_path + file_type)
@@ -40,7 +40,7 @@ phenology_forecasted_weather_data = phenology_forecasted_weather_data.set_index(
 
 # Storing the sites in a list object
 site_list = phenology_forecasted_weather_data["siteID"].unique()
-
+num_sites = len(site_list)
 # Breaking the data site-wise into separate dataframes
 future_pred_site_wise = phenology_forecasted_weather_data.groupby("siteID")
 future_pred_df_gcc = []
@@ -52,10 +52,10 @@ for k in range(0,8):
 input_features_gcc = ['radiation', 'max_temp', 'min_temp', 'precip']
 input_features_rcc = ['radiation', 'max_temp', 'min_temp', 'precip']
 
-todays_date = pd.Timestamp(date.today())   #date.today()
+todays_date = pd.Timestamp(date.today())
 
 # Creating the gcc related features using 'shift' funtion() and keep only the records required for predictions  
-for k in range(0,8):    
+for k in range(0,num_sites):    
     for i in range(1,11):     #Creating features columns for last 10 days from last year
         col_name_last_year = "last_year_gcc_90_(t-"+str(i)+")"
         future_pred_df_gcc[k].loc[:,col_name_last_year] = future_pred_df_gcc[k].loc[:,"gcc_90"].shift(i+365)
@@ -81,7 +81,7 @@ for k in range(0,8):
     future_pred_df_gcc[k] = future_pred_df_gcc[k][future_pred_df_gcc[k].columns.intersection(input_features_gcc)] 
 
 # Creating the rcc related features using 'shift' funtion() and keep only the records required for predictions
-for k in range(0,8):    
+for k in range(0,num_sites):    
     for i in range(1,11):     #Creating features columns for last 10 days from last year
         col_name_last_year = "last_year_rcc_90_(t-"+str(i)+")"
         future_pred_df_rcc[k].loc[:,col_name_last_year] = future_pred_df_rcc[k].loc[:,"rcc_90"].shift(i+365)
@@ -112,7 +112,7 @@ future_predictions = pd.DataFrame(columns = ['time', 'siteID', 'gcc_90', 'gcc_sd
 models_path = os.path.join(dirname, 'PEG_FUSION_0', 'models/')
 
 
-for k in range(0,8):
+for k in range(0,num_sites):
     gcc_pred = [] 
     RFR_model = pickle.load(open(models_path + "PEG_FUSION_0_gcc_model_RFR_"+site_list[k]+".pkl",'rb'))
     gcc_pred.append(RFR_model.predict(future_pred_df_gcc[k]))
