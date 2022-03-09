@@ -45,7 +45,7 @@ num_sites = len(site_list)
 future_pred_site_wise = phenology_forecasted_weather_data.groupby("siteID")
 future_pred_df_gcc = []
 future_pred_df_rcc = []
-for k in range(0,8):
+for k in range(0,num_sites):
     future_pred_df_gcc.append(future_pred_site_wise.get_group(site_list[k]))
     future_pred_df_rcc.append(future_pred_site_wise.get_group(site_list[k]))
 
