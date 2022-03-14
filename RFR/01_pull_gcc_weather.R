@@ -38,7 +38,7 @@ hourly <- noaa_fc %>%
          date = as.Date(time)) 
 
 # Next, summarize to daily by site and ensemble and drop ens00
-daily <- hourly %>%
+daily_ens <- hourly %>%
   group_by(siteID, ensemble, date) %>%
   summarize(radiation = sum(rad_Mj_hr),
             max_temp = max(airtemp_C),
@@ -48,12 +48,47 @@ daily <- hourly %>%
   ungroup() %>%
   filter(ensemble != "ens00")
 
+# Summarize to median hourly values across ensembles, then summarize to daily
+hourly2 <- noaa_fc %>% 
+  tidyr::drop_na() %>% # the 36th day has NAs, exclude
+  mutate(airtemp_C = ud.convert(air_temperature, "kelvin", "celsius"),
+         precip = ud.convert(precipitation_flux, "s^-1", "d^-1"), #kg per m2 is equivalent to mm
+         vpd = RHtoVPD(RH = relative_humidity, TdegC = airtemp_C)) %>%
+  group_by(siteID, time) %>%
+  summarize(radiation = median(surface_downwelling_shortwave_flux_in_air),
+            airtemp_C = median(airtemp_C),
+            precip = median(precip),
+            vpd = median(vpd),
+            rad_Mj_hr = ud.convert(radiation*60*60, "joule", "megajoule")) %>%
+  ungroup() %>%
+  mutate(date = as.Date(time))
+
+daily <- hourly2 %>%
+  group_by(siteID, date) %>%
+  summarize(radiation = sum(rad_Mj_hr),
+            max_temp = max(airtemp_C),
+            min_temp = min(airtemp_C),
+            precip = max(precip),
+            vpd = mean(vpd)) %>%
+  ungroup()
+
 ###########Save weather csv###########
+if(!dir.exists('inputs_weather/median')) {
+  dir.create('inputs_weather/median')
+}
+
+if(!dir.exists('inputs_weather/ensemble')) {
+  dir.create('inputs_weather/ensemble')
+}
+
 date <- min(daily$date)
-ens <- unique(daily$ensemble)
+ens <- unique(daily_ens$ensemble)
+
+write_csv(daily, file = paste0('inputs_weather/median/NOAA_GEFS_35d_', date, '.csv'))
+
 for(e in ens){
-  sub <- filter(daily, ensemble == e)
-  write_csv(daily, file = paste0('inputs_weather/NOAA_GEFS_35d_', 
+  sub <- filter(daily_ens, ensemble == e)
+  write_csv(sub, file = paste0('inputs_weather/ensemble/NOAA_GEFS_35d_', 
                                  date, '_', e, '.csv'))
 }
 
