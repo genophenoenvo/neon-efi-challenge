@@ -8,7 +8,7 @@ import numpy as np
 # Getting current working directory
 dirname = os.path.abspath(os.getcwd())
 
-# Getting latest phenology from 'inputs_gss' folder
+# Getting latest phenology from 'inputs_gcc' folder
 inputs_path = os.path.join(dirname, 'inputs_gcc')
 file_type = '/*csv'
 files = glob.glob(inputs_path + file_type)
