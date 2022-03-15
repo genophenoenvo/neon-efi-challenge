@@ -87,9 +87,11 @@ ens <- unique(daily_ens$ensemble)
 
 write_csv(daily, file = paste0('inputs_weather/median/NOAA_GEFS_35d_', date, '.csv'))
 
-for(e in ens){
-  sub <- filter(daily_ens, ensemble == e)
-  write_csv(sub, file = paste0('inputs_weather/ensemble/NOAA_GEFS_35d_', 
-                                 date, '_', e, '.csv'))
-}
+write_csv(daily_ens, file = paste0('inputs_weather/ensemble/NOAA_GEFS_35d_', date, '.csv'))
+
+# for(e in ens){
+#   sub <- filter(daily_ens, ensemble == e)
+#   write_csv(sub, file = paste0('inputs_weather/ensemble/NOAA_GEFS_35d_', 
+#                                  date, '_', e, '.csv'))
+# }
 
