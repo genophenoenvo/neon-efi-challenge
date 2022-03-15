@@ -62,8 +62,10 @@ for(v in version){
   # forecast_output_validator(file.path(".", v, "submit", pred_filename))
   
   # Submit
-  aws.s3::put_object(file.path(".", v, "submissions", pred_filename), 
-                     bucket = "submissions", 
-                     region="data", 
-                     base_url = "ecoforecast.org")
+  Sys.setenv("AWS_DEFAULT_REGION" = "data",
+             "AWS_S3_ENDPOINT" = "ecoforecast.org")
+  
+  aws.s3::put_object(object = file.path(".", v, "submissions", pred_filename), 
+                     bucket = "submissions")
+  
 }
