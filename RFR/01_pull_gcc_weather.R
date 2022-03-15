@@ -1,3 +1,4 @@
+.libPaths(c("/home/kristinariemer/r_libs/", .libPaths()))
 ###########Pull input data###########
 
 # gcc from ecoforecast.org
@@ -15,7 +16,7 @@ library(readr)
 library(dplyr)
 library(udunits2)
 library(plantecophys)
-source("~/neon4cast/R/noaa.R")
+source("/home/kristinariemer/neon4cast/R/noaa.R")
 
 ###########Download weather data###########
 pheno_sites <- c("BART", "CLBJ", "DELA", "GRSM", 
