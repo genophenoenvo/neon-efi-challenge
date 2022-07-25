@@ -66,6 +66,5 @@ for(v in version){
              "AWS_S3_ENDPOINT" = "ecoforecast.org")
   
   aws.s3::put_object(file = file.path(".", v, "submissions", pred_filename), 
-                     bucket = "submissions")
-  
+                     bucket = "submissions") 
 }
