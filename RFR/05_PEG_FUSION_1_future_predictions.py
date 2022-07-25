@@ -16,7 +16,7 @@ latest_file = max(files, key=os.path.getctime)
 dataset = pd.read_csv(latest_file)
 
 # Getting latest forecasted weather parameters from 'inputs_weather' folder
-forecasted_weather_path = os.path.join(dirname, 'inputs_weather/median')
+forecasted_weather_path = os.path.join(dirname, 'inputs_weather/ensemble')
 file_type = '/*csv'
 forecasted_weather_files = glob.glob(forecasted_weather_path + file_type)
 latest_forecasted_weather_file = max(forecasted_weather_files, key=os.path.getctime)
@@ -153,6 +153,6 @@ for k in range(0,num_sites):
 
 
 # Generating output csv files with predictions
-outputs_path = os.path.join(dirname, 'PEG_FUSION_0', 'outputs/')
-output_file_name= "PEG_FUSION_0_predictions_" + str(date.today().strftime("%m-%d-%y"))+ ".csv"
+outputs_path = os.path.join(dirname, 'PEG_FUSION_1', 'outputs/')
+output_file_name= "PEG_FUSION_1_predictions_" + str(date.today().strftime("%m-%d-%y"))+ ".csv"
 future_predictions.to_csv(outputs_path + output_file_name, index=False, header = True)
