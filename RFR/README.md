@@ -1,8 +1,22 @@
-# Random Forest Regressor
+# Machine Learning Models
 
-This folder contains the scripts, models, and data needed to forecast phenology (as measured by gcc_90) using machine learning methods for the [NEON Ecological Forecast Challenge](https://ecoforecast.org/efi-rcn-forecast-challenges/). The challenge requires gcc_90 predictions for the next 35 days for 8 NEON sites. Three versions using random forest regressor are used here. 
+This folder contains the scripts, models, and data needed to forecast phenology (as measured by gcc_90 and/or rcc_90) using machine learning models for the [NEON Ecological Forecast Challenge](https://ecoforecast.org/efi-rcn-forecast-challenges/). The challenges included:
+* <b>Spring 2021</b>: gcc_90 and gcc_sd predictions for the next 35 days for 8 NEON sites. Three versions using random forest regressor (PEG_RFR0, PEG_RFR, PEG_RFR2) were submitted.
+
+* <b>Fall 2021:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the next 35 days for 8 NEON sites. Continued submissions of the previous three versions of models using Random Forest Regressor, and developed a new model incorporating an ensemble ML approach (PEG_FUSION_0)  
+
+* <b>Spring 2022:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the next 35 days for 18 NEON sites. Continued submission of PEG_FUSION_0 from the previous season after extending to 18 sites and developed a new idea using identical PEG_FUSION_0 models and submitted a new forecast (PEG_FUSION_1).  
 
 ## Modeling approach
+### Spring 2021
+
+
+### Fall 2021
+
+
+
+### Spring 2022
+
 Two models use the previous 5 days gcc value and (t-5) to (t+19)th days' gcc value from last year in order to predict gcc for t to (t+36)th day. 
 
 * `PEG_RFR0/` folder:
