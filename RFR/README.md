@@ -5,36 +5,60 @@ This folder contains the scripts, models, and data needed to forecast phenology 
 
 * <b>Fall 2021:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the next 35 days for 8 NEON sites. Continued submissions of the previous three versions of models using Random Forest Regressor, and developed a new model incorporating an ensemble ML approach (PEG_FUSION_0)  
 
-* <b>Spring 2022:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the next 35 days for 18 NEON sites. Continued submission of PEG_FUSION_0 from the previous season after extending to 18 sites and developed a new idea using identical PEG_FUSION_0 models and submitted a new forecast (PEG_FUSION_1).  
+* <b>Spring 2022:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the next 35 days for 18 NEON sites. Continued submission of PEG_FUSION_0 from the previous season after extending it to 18 sites and developed a new idea using identical PEG_FUSION_0 models and submitted a new forecast (PEG_FUSION_1).  
 
 ## Modeling approach
 ### Spring 2021
 
+The following models were submitted as part of Spring 2021 challenge, which predicts gcc_90 of next 35 days. 
 
-### Fall 2021
-
-
-
-### Spring 2022
-
-Two models use the previous 5 days gcc value and (t-5) to (t+19)th days' gcc value from last year in order to predict gcc for t to (t+36)th day. 
-
-* `PEG_RFR0/` folder:
-  - `models/` site-specific models wherein missing values of gcc_90 have been removed during training
-  - `outputs/` daily predictions of the following 35 days of gcc_90 for each site
-  - `submissions/` formatted for EFI submission
+* <b>PEG_RFR0:</b> 
+  - <b>Input:</b> gcc_90 values of immediate past (last 5 days) as well as gcc_90 values from the last year (25 days), i.e., to predict t to (t+35) days of gcc_90, we used gcc_90 value from (t-1)th to (t-5)th day and gcc_90 value from (t-5)th to (t+19)th day of last year
+  - <b>Output:</b> gcc_90 of total 36 days i.e., t to (t+35) days
+  - <b>Model Description:</b> Random Forest Regressor is trained individually for each of the sites to predict gcc_90 using 3-fold cross-validation after dropping all the missing values of past gcc_90.
   
-* `PEG_RFR/` folder:
+  The folder structure of PEG_RFR0 is given below:   
+    - `models/` site-specific models wherein missing values of gcc_90 have been removed during training
+    - `outputs/` daily predictions of the following 35 days of gcc_90 for each site
+    - `submissions/` formatted for EFI submission
+  
+* <b>PEG_RFR:</b>
+  - <b>Input:</b> gcc_90 values of immediate past (last 5 days) as well as gcc_90 values from the last year (20 days), i.e., to predict t to (t+35) days of gcc_90, we used gcc_90 value from (t-1)th to (t-5)th day and gcc_90 value from (t-5)th to (t+14)th day of last year
+  - <b>Output:</b> gcc_90 of total 36 days i.e., t to (t+35) days
+  - <b>Model Description:</b> Random Forest Regressor is trained individually for each of the sites to predict gcc_90 using 3-fold cross-validation after using interpolation strategy to fill in all the missing values of past gcc_90.
+  
+  The folder structure of PEG_RFR/ is given below:
   - `models/` site-specific models wherein missing values of gcc_90 have ____
   - `outputs` daily predictions of the following 35 days of gcc_90 for each site
   - `submissions/` formatted for EFI submission
-  
-One model uses the (t-7) to (t+7)th days' gcc value from last year and the max_temp, min_temp, radiation, and precipitation of the same day to predict gcc (for 1 day at a time). For past data, weather variables were obtained from [Daymet](https://daymet.ornl.gov/overview). For future predictions, hourly [NOAA weather forecasts](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-ensemble-forecast-system-gefs) were obtained via the EFI website, summarized as the median across 21 model ensembles, and summarized as the mean or sum into daily variables. 
 
-  * `PEG_RFR2/` folder:
+  
+* <b>PEG_RFR2:</b>
+  - <b>Input:</b> gcc_90 values from the last year (15 days) and current weather data, i.e., to predict gcc_90 value of tth day, we use (t-7)th to (t+7)th days’ gcc_90 of last year and weather variables (max_temp, min_temp, radiation, precipitation) of tth day. Weather data extracted from Daymet is used to train the model. To forecast gcc_90 for future days, NOAA forecasted weather parameters are being used.
+  - <b>Output:</b> gcc_90 of next 35 days i.e., (t+1) to (t+35) days
+  - <b>Model Description:</b> Random Forest Regressor is trained individually for each of the sites to predict gcc_90 using 3-fold cross-validation after dropping all the missing values of input parameters.
+  
+  The folder structure of `PEG_RFR2/` is given below:
     - `models/` site-specific models trained on the full existing dataset
     - `outputs` daily predictions of the following 35 days of gcc_90 for each site
     - `submissions/` formatted for EFI submission
+
+For the submission of forcast, gcc_sd of future days is just replaced by last years' gcc_sd value.
+  
+### Fall 2021
+
+* <b>PEG_FUSION_0:</b> 
+  - <b>Input:</b> gcc_90/rcc_90 data of 20 days from last year i.e., (t-10)th to (t+9)th day of last year and weather variables of tth day (Max. temp, Min. temp, Radiation, Precipitation)
+  - <b>Output:</b> gcc_90/rcc_90 of next 35 days
+  - <b>Model Description:</b> Ensemble machine learning approach is taken to predict gcc90/rcc_90, as part of which four models (Random Forest Regressor (RFR), ElasticNet Regressor, Extreme Gradient Boosting (XgBoost), K-Nearest Neighbor Regressor (KNN)) are trained individually for each of the sites to predict rcc_90 and three models (Random Forest Regressor (RFR), ElasticNet Regressor, Extreme Gradient Boosting (XgBoost)) are trained individually for each of the sites to predict gcc_90. Finally, rcc_90 and rcc_sd is predicted by taking the average and standard deviation of the predicted outputs by the four models and gcc_90 and rcc_sd is predicted by taking the average and standard deviation of the predicted outputs by the four models. 
+
+  
+  The folder structure of PEG_FUSION_0 is given below:   
+    - `models/` site-specific models wherein missing values of gcc_90 have been removed during training
+    - `outputs/` daily predictions of the following 35 days of gcc_90 for each site
+    - `submissions/` formatted for EFI submission
+
+
   
 ## Forecasting pipeline
 Our goal is to produce and submit daily forecasts. `forecast_gcc.sh` is a shell script that will run the R and python scripts needed to accomplish this goal. 
