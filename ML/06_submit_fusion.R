@@ -65,7 +65,7 @@ for(v in version){
   Sys.setenv("AWS_DEFAULT_REGION" = "data",
              "AWS_S3_ENDPOINT" = "ecoforecast.org")
   
-  aws.s3::put_object(file.path(".", v, "submissions", pred_filename), 
+  aws.s3::put_object(file = file.path(".", v, "submissions", pred_filename), 
                      bucket = "submissions")
   
 }
