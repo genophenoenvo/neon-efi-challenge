@@ -6,9 +6,10 @@
 
 #Ignore csv files in the inputs folder
 simple/*.csv
-RFR/inputs_gcc/*.csv
-RFR/inputs_weather/*/*.csv
-RFR/PEG_RFR/**/*.csv
-RFR/PEG_RFR0/**/*.csv
-RFR/PEG_RFR2/**/*.csv
-RFR/PEG_FUSION_0/**/*.csv
+ML/inputs_gcc/*.csv
+ML/inputs_weather/*/*.csv
+ML/PEG_RFR/**/*.csv
+ML/PEG_RFR0/**/*.csv
+ML/PEG_RFR2/**/*.csv
+ML/PEG_FUSION_0/**/*.csv
+ML/PEG_FUSION_1/**/*.csv
