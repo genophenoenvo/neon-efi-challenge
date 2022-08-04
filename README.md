@@ -32,9 +32,9 @@ An exponential smoothing model with seasonality using the `forecast` package in 
 - implement [Holts-Winter seasonality model](https://otexts.com/fpp3/holt-winters.html)
 - get EML metadata working
 
-### Random Forest Regressor Models (Team PEG_RFR)
+### Machine Learning Models (Team PEG_RFR, PEG_FUSION)
 
 Leads: Arun Ross and Debashmita Pal
 
-- `RFR` folder
+- `ML` folder
   - See details in that folder's README
