@@ -70,15 +70,21 @@ The following models predict gcc_90 of next 35 days. For gcc_sd, last years' gcc
 
 ### Spring 2022
 * <b>PEG_FUSION_1 (Prediction based on last year gcc_90 values and current weather data):</b>
-  Herein, we use identical models developed as part of PEG_FUSION_0, however, the forecast of gcc_90, rcc_90, gcc_sd and rcc_sd were submitted by predicting the values individually from 30 forecasted weather parameter files ***
+  Herein, we use identical models developed as part of PEG_FUSION_0, however, the forecast of gcc_90, rcc_90, gcc_sd and rcc_sd were submitted by predicting the values individually from 30 weather forcasts (produced by `01_pull_gcc_weather.R`)
+  The folder structure of PEG_FUSION_1 is given below:   
+    - `outputs/` daily predictions of the following 35 days of gcc_90 for each site and each weather forecast
+    - `submissions/` summaries of the mean and sd of gcc for each site and date combination (across forecasts) for EFI submission
   
 ## Forecasting pipeline
 Our goal is to produce and submit daily forecasts. `forecast_gcc.sh` is a shell script that will run the R and python scripts needed to accomplish this goal. 
-1. `01_pull_gcc_weather.R` downloads the latest gcc data and saves the .csv file in the `inputs` folder with the date of the most recent gcc value
+1. `01_pull_gcc_weather.R` downloads the latest gcc data and saves the .csv file in the `inputs_weather/` and `inputs_gcc/` folders with the date of the most recent data
 2. `02_PEG_RFR0_gcc_predictions.py` ingests the most recent gcc data, gapfills if necessary, runs the 8 site-specific models in `PEG_RFR0/models`, and outputs csv file to `PEG_RFR0/outputs` with the run date
 3. `03_PEG_RFR_gcc_predictions_with_interpolation.py` ingests the most recent gcc data, gapfills if necessary, runs the 8 site-specific models in `PEG_RFR/models`, and outputs csv file to `PEG_RFR/outputs` with the run date 
 4. `04_PEG_RFR2_gcc_predictions_with_weather_variables.py` ingests the most recent gcc and weather forecast data, runs the 8 site-specific models in `PEG_RFR2/models`, and outputs csv file to `PEG_RFR2/outputs` with the run date
-5. `05_submit_rfr.R` takes the latest output from `PEG_RFR0/outputs`, `PEG_RFR/outputs`, and `PEG_RFR2/outputs`, formats for submission, saves into respective `submissions/` folders, and submits to EFI competition website. 
+5. `05_PEG_FUSION_0_future_predictions.py` ingests the most recent gcc and weather forecast data, runs the 18 site-specific models in `PEG_FUSION_0/models`, and outputs csv file to `PEG_FUSION_0/outputs` with the run date
+6. `05_PEG_FUSION_1_future_predictions.py` ingests the most recent gcc and weather forecast data, runs the 18 site-specific models in `PEG_FUSION_0/models`, and outputs csv file to `PEG_FUSION_1/outputs` with the run date
+7. `06_submit_rfr.R` takes the latest output from `PEG_RFR0/outputs`, `PEG_RFR/outputs`, and `PEG_RFR2/outputs`, formats for submission, saves into respective `submissions/` folders, and submits to EFI competition website. 
+8. `06_submit_fusion.R` takes the latest output from `PEG_FUSION_0/outputs` and `PEG_FUSION_1/outputs`, formats for submission, saves into respective `submissions/` folders, and submits to EFI competition website. 
 
 ## Forecasting submission
 
