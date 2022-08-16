@@ -59,7 +59,7 @@ The following models predict gcc_90 of next 35 days. For gcc_sd, last years' gcc
 * <b>PEG_FUSION_0 (Prediction based on last year gcc_90 values and current weather data using ensemble approach):</b> 
   - <b>Input:</b> gcc_90/rcc_90 data of 20 days from last year i.e., (t-10)th to (t+9)th day of last year and weather variables of tth day (Max. temp, Min. temp, Radiation, Precipitation). Weather data extracted from Daymet is used to train the model. To forecast gcc_90 for future days, NOAA forecasted weather parameters are being used.
   
-  - <b>Output:</b> gcc_90/rcc_90 of next 35 days
+  - <b>Output:</b> gcc_90/rcc_90 and gcc_sd/rcc_sd of next 35 days
   
   - <b>Model Description:</b> Ensemble machine learning approach is taken to predict gcc90/rcc_90, as part of which four models (Random Forest Regressor (RFR), ElasticNet Regressor, Extreme Gradient Boosting (XgBoost), K-Nearest Neighbor Regressor (KNN)) are trained individually for each of the sites to predict rcc_90 and three models (Random Forest Regressor (RFR), ElasticNet Regressor, Extreme Gradient Boosting (XgBoost)) are trained individually for each of the sites to predict gcc_90. Finally, rcc_90 and rcc_sd is predicted by taking the average and standard deviation of the predicted outputs by the four models and gcc_90 and gcc_sd are predicted by taking the average and standard deviation of the predicted outputs by the three models. 
       
