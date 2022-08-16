@@ -52,7 +52,7 @@ The following models predict gcc_90 of next 35 days. For gcc_sd, last years' gcc
 <b>Notes:</b>:
   - Since gcc_90 is not getting updated daily, the models using immediate past gcc_90 values (PEG_RFR0 and PEG_RFR) use forward fill strategy to fill in immediate past gcc_90 values while submitting the forecast for next 35 days
   
-  - Forecasted weather parameters used for submission of forecast for next 35 days are the median of 30 forecasted ensenle weather parameter files extrated from NOAA. 
+  - Forecasted weather parameters used for submission of forecast for next 35 days are the median of 30 forecasted ensemble weather parameter files extrated from NOAA. 
   
 ### Fall 2021
 
