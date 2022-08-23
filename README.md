@@ -1,6 +1,6 @@
 # Models for EFI Challenge
 
-The [GenoPhenoEnvo team](https://genophenoenvo.github.io/) submitted machine learning models to predict GCC and RCC to the [EFI Spring 2021 and Fall 2021 Challenge](https://ecoforecast.org/efi-rcn-forecast-challenges/). 
+The [GenoPhenoEnvo team](https://genophenoenvo.github.io/) submitted machine learning models to predict GCC and RCC to the [EFI Spring 2021, Fall 2021, and Spring 2022 Challenge](https://ecoforecast.org/efi-rcn-forecast-challenges/). Results for submitted forecasts can be viewed [here](https://shiny3.ecoforecast.org/). 
 
 ## Background
 
@@ -37,4 +37,4 @@ An exponential smoothing model with seasonality using the `forecast` package in 
 Leads: Arun Ross and Debashmita Pal
 
 - `ML` folder
-  - See details in that folder's README
+  - See details in that folder's [README](https://github.com/genophenoenvo/neon-efi-challenge/tree/master/ML/#machine-learning-models)
