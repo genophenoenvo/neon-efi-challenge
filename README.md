@@ -30,15 +30,37 @@ EFI and the Phenology challenge are best described in the links above. In additi
 
 Lead: David LeBauer
 
-The original aim of having a 'simple model' was work out the mechanisms of the forecast challenge. Although it started as a 'simple' predictions, we later implemented an seasonal plus exponential smoothing model using the R forecast package.
+The original aim of having a 'simple model' was work out the mechanisms of the forecast challenge. We call it 'simple' because these models have a single input - the historical time series of the variable (gcc or rcc) from 2016 through day t-1 to predict values of the variable through day t+1:t+180.
+
+Although it started as a 'simple' moving window prediction, we later implemented an seasonal plus exponential smoothing model using the R forecast package.
+
+Inputs and outputs were the same for both models. Neither model used gcc or rcc.
+
+-   Inputs: historical time series of gcc or rcc from NEON Phenocam sites.
+
+-   Outputs: daily, 180 day forecasts of gcc and rcc
+
+Code:
 
 -   `simple`folder:
     -   `ets_forecast.R` An exponential smoothing model with seasonality using the `forecast` package in R. The original moving window model is in the comments
 
+**Moving Window Mean Through 2021-03-17**
+
+This model used a rolling mean around previous years' dates to predict future. The forecast for day d was a rolling average of the 8 days before and after.
+
+**Seasonal + Exponential Smoothing 2021-03-17 to the end of the year**
+
+This is not actually a simple model, it is in fact a very sophisticated Seasonally-adjusted exponential smoothing state-space model. In this case, it is only simple in that it is both univariate and easy to implement using the `forecast` R package (Hyndman & Khandakar, 2008) following the clear explanations provided in the Forecasting Principles and Practice text (Hyndman & Athanasopoulos, 2018).
+
+Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on \<current date\>.
+
+Hyndman RJ, Khandakar Y (2008). "Automatic time series forecasting: the forecast package for R." \_Journal of Statistical Software\_, \*26\*(3), 1-22. doi: 10.18637/jss.v027.i03 (URL:[https://doi.org/10.18637/jss.v027.i03).](https://doi.org/10.18637/jss.v027.i03).)
+
 #### Ideas for future improvement / additional models
 
--   [Holts-Winter seasonality model](https://otexts.com/fpp3/holt-winters.html)
--   Use the `forecast::auto.arima` function to fit ARIMA parameters.
+-   [Holts-Winter seasonality model](https://otexts.com/fpp2/holt-winters.html)
+-   Fit ARIMA model using the `forecast::auto.arima` function.
 
 ### Machine Learning Models (Team PEG_RFR, PEG_FUSION)
 
