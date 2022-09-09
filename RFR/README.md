@@ -8,6 +8,7 @@ This folder contains the scripts, models, and data needed to forecast phenology 
 * <b>Spring 2022:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the next 35 days for 18 NEON sites. Continued submission of PEG_FUSION_0 from the previous season after extending it to 18 sites and developed a new idea using identical PEG_FUSION_0 models and submitted a new forecast (PEG_FUSION_1).  
 
 ## Modeling approach
+
 ### Spring 2021
 
 The following models predict gcc_90 of next 35 days. For gcc_sd, last years' gcc_sd value was submitted as forecast for current year. 
@@ -69,10 +70,12 @@ The following models predict gcc_90 of next 35 days. For gcc_sd, last years' gcc
     - `submissions/` formatted for EFI submission
 
 ### Spring 2022
+
 * <b>PEG_FUSION_1 (Prediction based on last year gcc_90 values and current weather data):</b>
   Herein, we use identical models developed as part of PEG_FUSION_0, however, the forecast of gcc_90, rcc_90, gcc_sd and rcc_sd were submitted by predicting the values individually from 30 forecasted weather parameter files ***
   
 ## Forecasting pipeline
+
 Our goal is to produce and submit daily forecasts. `forecast_gcc.sh` is a shell script that will run the R and python scripts needed to accomplish this goal. 
 1. `01_pull_gcc_weather.R` downloads the latest gcc data and saves the .csv file in the `inputs` folder with the date of the most recent gcc value
 2. `02_PEG_RFR0_gcc_predictions.py` ingests the most recent gcc data, gapfills if necessary, runs the 8 site-specific models in `PEG_RFR0/models`, and outputs csv file to `PEG_RFR0/outputs` with the run date
