@@ -10,17 +10,17 @@ This folder contains the scripts, models, and data needed to forecast
 phenology (as measured by gcc_90 and/or rcc_90) using machine learning
 models for the [NEON Ecological Forecast
 Challenge](https://ecoforecast.org/efi-rcn-forecast-challenges/). The
-challenges included: \* <b>Spring 2021</b>: gcc_90 and gcc_sd
+challenges included: 
+
+-   <b>Spring 2021</b>: gcc_90 and gcc_sd
 predictions for the next 35 days for 8 NEON sites. Three versions using
 random forest regression (PEG_RFR0, PEG_RFR, PEG_RFR2) were submitted.
-
 -   <b>Fall 2021:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for the
     next 35 days for 8 NEON sites. Continued submissions of the previous
     three versions of models using Random Forest Regressor for gcc_90
     and gcc_sd, and developed a new model incorporating an ensemble ML
     approach (PEG_FUSION_0) to predict gcc_90, gcc_sd, rcc_90 and
     rcc_sd.
-
 -   <b>Spring 2022:</b> gcc_90, gcc_sd, rcc_90, rcc_sd predictions for
     the next 35 days for 18 NEON sites. Continued submission of
     PEG_FUSION_0 from the previous season after extending it to 18 sites
@@ -105,24 +105,21 @@ years' gcc_sd value was submitted as forecast for current year.
     immediate past gcc_90 values (PEG_RFR0 and PEG_RFR) use forward fill
     strategy to fill in immediate past gcc_90 values while submitting
     the forecast for next 35 days
--   Forecasted weather parameters used for submission of forecast for
-    next 35 days are the median of 30 forecasted ensenle weather
-    parameter files extrated from NOAA.
+-   Forcasted weather parameters used for submission of forecast for
+    next 35 days are the median of 30 forcasted ensenble weather
+    parameter files extracted from NOAA.
 
 ### Fall 2021
 
 -   <b>PEG_FUSION_0 (Prediction based on last year gcc_90 values and
     current weather data using ensemble approach):</b>
-
     -   <b>Input:</b> gcc_90/rcc_90 data of 20 days from last year i.e.,
         (t-10)th to (t+9)th day of last year and weather variables of
         tth day (Max. temp, Min. temp, Radiation, Precipitation).
         Weather data extracted from Daymet is used to train the model.
         To forecast gcc_90 for future days, NOAA forecasted weather
         parameters are being used.
-
     -   <b>Output:</b> gcc_90/rcc_90 of next 35 days
-
     -   <b>Model Description:</b> Ensemble machine learning approach is
         taken to predict gcc90/rcc_90, as part of which four models
         (Random Forest Regressor (RFR), ElasticNet Regressor, Extreme
@@ -136,13 +133,7 @@ years' gcc_sd value was submitted as forecast for current year.
         and gcc_90 and gcc_sd are predicted by taking the average and
         standard deviation of the predicted outputs by the three models.
 
-    The folder structure of PEG_FUSION_0 is given below:
-
-    -   `models/` site-specific models wherein missing values of gcc_90
-        have been removed during training
-    -   `outputs/` daily predictions of the following 35 days of gcc_90
-        for each site
-    -   `submissions/` formatted for EFI submission
+    The PEG_FUSION_0 folder contains a subfolder named `models/` that includes site-specific models wherein missing values of gcc_90 have been removed during training.
 
 ### Spring 2022
 
@@ -164,16 +155,16 @@ the most recent gcc value
 2. `02_PEG_RFR0_gcc_predictions.py` ingests
 the most recent gcc data, gapfills if necessary, runs the 8
 site-specific models in `PEG_RFR0/models`, and outputs csv file to
-`PEG_RFR0/outputs` with the run date 
+`PEG_RFR0/outputs` with the run date.
 3.
 `03_PEG_RFR_gcc_predictions_with_interpolation.py` ingests the most
 recent gcc data, gapfills if necessary, runs the 8 site-specific models
 in `PEG_RFR/models`, and outputs csv file to `PEG_RFR/outputs` with the
-run date 
+run date.
 4. `04_PEG_RFR2_gcc_predictions_with_weather_variables.py`
 ingests the most recent gcc and weather forecast data, runs the 8
 site-specific models in `PEG_RFR2/models`, and outputs csv file to
-`PEG_RFR2/outputs` with the run date 
+`PEG_RFR2/outputs` with the run date. 
 5. `05_submit_rfr.R` takes the
 latest output from `PEG_RFR0/outputs`, `PEG_RFR/outputs`, and
 `PEG_RFR2/outputs`, formats for submission, saves into respective
